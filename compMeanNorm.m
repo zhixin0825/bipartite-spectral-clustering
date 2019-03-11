@@ -1,0 +1,10 @@
+function s = compMeanNorm(y,z,P)
+yP = y*P;
+zPt = z*P';
+Af = struct;
+Af.size = [size(y,1) size(z,1)];
+Af.times = @(x,varargin) yP * (z'*x) ;
+Af.trans = @(x,varargin) zPt * (y'*x);
+Af.param = [];
+opts.tol = 1e-8;
+[~,s,~] = lmsvd(Af,1,[]);

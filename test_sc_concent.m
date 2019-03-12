@@ -64,27 +64,9 @@ for t = 1:T  % This is parallel for; use with caution
      
         for mtd = 1:nReg
             tic,          
-             [ yt, zt ] = biSpeClust( A, K, L, 'RegConst', RegVec(mtd), opts{:});
-             yt = label_vec2mat(yt);
-             zt = label_vec2mat(zt);
-%             switch mtd
-%                 case 1                
-%                    [ yt, zt ] = biSpeClust( A, K, L, 'RegConst', RegVec(1), opts{:});
-%                    yt = label_vec2mat(yt);
-%                    zt = label_vec2mat(zt);
-%                 case 2
-%                    [ yt, zt ] = biSpeClust( A, K, L, 'RegConst', RegVec(2), opts{:});
-%                    yt = label_vec2mat(yt);
-%                    zt = label_vec2mat(zt);
-%                 case 3
-%                    [ yt, zt ] = biSpeClust( A, K, L, 'RegConst', RegVec(3), opts{:});
-%                    yt = label_vec2mat(yt);
-%                    zt = label_vec2mat(zt);
-%                 case 4
-%                    [ yt, zt ] = biSpeClust( A, K, L, 'RegConst', RegVec(4), opts{:});
-%                    yt = label_vec2mat(yt);
-%                    zt = label_vec2mat(zt);     
-%             end       
+            [ yt, zt ] = biSpeClust( A, K, L, 'RegConst', RegVec(mtd), opts{:});
+            yt = label_vec2mat(yt);
+            zt = label_vec2mat(zt);
             dt(j,mtd) = toc;
         
             nmi(j,mtd,1) = compute_mutual_info(yt,y);
@@ -93,20 +75,13 @@ for t = 1:T  % This is parallel for; use with caution
             acc(j,mtd,1) = compute_acc(y, yt);
             acc(j,mtd,2) = compute_acc(z, zt);
             acc(j,mtd,3) = compute_overll_acc(y, yt, z, zt);
-        end
-        
-        
-      
+        end      
     end
 
     nmi_all(:,:,:,t) = nmi;
     acc_all(:,:,:,t) = acc;
     dt_all(:,:,t) = dt;
-%     java.io.File.createTempFile(sprintf('%3d',t), 'temp');
 end
-
-%%
-%fprintf('\nrunning times = %s \n', sprintf('%4.2f  ', mean(dt_all,2)) )
 
 %%
 nmi_avg = mean(nmi_all,4);
